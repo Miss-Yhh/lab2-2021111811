@@ -1,0 +1,41 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AppointmentMapper">
+    <select id="findAppointmentsByTeacherId" resultType="Appointment">
+        SELECT appointment_id as appointmentId,teacher_id as teacherId, student_id as studentId ,slot_id as slotId , status ,created_at as createdAt ,updated_at as updatedAt
+        FROM appointments WHERE teacher_id = #{teacherId}
+    </select>
+
+    <select id="findAppointmentsByStudentId" resultType="Appointment">
+        SELECT appointment_id as appointmentId,teacher_id as teacherId, student_id as studentId ,slot_id as slotId , status ,created_at as createdAt ,updated_at as updatedAt
+        FROM appointments WHERE student_id = #{studentId}
+    </select>
+
+    <insert id="insertAppointment">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO appointments (teacher_id, student_id, slot_id, status)
+        VALUES (#{teacherId}, #{studentId}, #{slotId},
+        <!-- 如果status为null，则使用默认值REQUESTED -->
+        IFNULL(#{status}, 'REQUESTED'))
+    </insert>
+    <update id="updateAppointmentStatus">
+        UPDATE appointments
+        SET status = #{status}
+        WHERE appointment_id = #{appointmentId}
+    </update>
+
+    <update id="acceptAppointment">
+        UPDATE appointments
+        SET status = "APPROVED"<!-- #{status} -->
+        WHERE appointment_id = #{appointmentId}
+    </update>
+
+    <update id="refuseAppointment">
+        UPDATE appointments
+        SET status = "DENIED"<!-- #{status} -->
+        WHERE appointment_id = #{appointmentId}
+    </update>
+
+</mapper>
+

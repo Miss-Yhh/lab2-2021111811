@@ -1,0 +1,39 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AvailabilitySlotsMapper">
+
+    <insert id="insertAvailabilitySlot" parameterType="com.example.model.AvailabilitySlot">
+        INSERT INTO availability_slots (teacher_id, start_time, end_time, status, created_at, updated_at)
+        VALUES (#{teacherId}, #{startTime}, #{endTime}, #{status}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <update id="updateAvailabilitySlotStatus" parameterType="map">
+        UPDATE availability_slots
+        SET status = #{status}
+        WHERE slot_id = #{slotId}
+    </update>
+
+    <select id="selectAvailabilitySlotsByTeacherIdAndTime" resultType="com.example.model.AvailabilitySlot">
+        SELECT slot_id as slotId, teacher_id as teacherId, start_time as startTime, end_time as endTime, status,created_at as createdAt,updated_at as updated_At
+        FROM availability_slots
+        WHERE teacher_id = #{teacherId}
+          AND start_time BETWEEN #{startTime} AND #{endTime}
+          AND end_time BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="findAvailableSlotsByTeacherId" resultType="com.example.model.AvailabilitySlot">
+        SELECT slot_id as slotId, teacher_id as teacherId, start_time as startTime, end_time as endTime, status,created_at as createdAt,updated_at as updated_At
+        FROM availability_slots
+        WHERE teacher_id = #{teacherId}
+          AND status = 'AVAILABLE'
+    </select>
+
+    <select id="getSlotStatus" resultType="java.lang.String">
+        SELECT status
+        FROM availability_slots
+        WHERE slot_id = #{slotId}
+    </select>
+
+
+    <!-- 其他查询或更新语句... -->
+
+</mapper>

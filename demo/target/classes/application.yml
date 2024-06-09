@@ -1,0 +1,23 @@
+# Spring Boot配置
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test2?useSSL=false&serverTimezone=UTC
+    username: root
+    password: yjn624089
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# MyBatis配置
+mybatis:
+  type-aliases-package: com.example.model # 实体类所在的包路径
+  mapper-locations: classpath:mybatis/*.xml # Mapper XML文件的位置
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印MyBatis日志到控制台
+
+# 日志配置
+logging:
+  level:
+    com.example.project: DEBUG # 设置你的项目的日志级别
+
+# 其他配置可以根据需要进行添加，比如JPA、Redis、Security等
+server:
+  port: 8088
